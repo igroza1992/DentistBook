@@ -1,0 +1,159 @@
+﻿@using System.Data.SqlClient
+@model DentistBook.Models.Pacient
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Pacient</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProcedureId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProcedureId", null, "Slect Procedure", new { @class = "form-control",id = "procedureId"  })
+                @Html.ValidationMessageFor(model => model.ProcedureId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorId, "Doctor", htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                
+                @Html.DropDownListFor(model => model.DoctorId, Enumerable.Empty<SelectListItem>(), "Slect Doctor", new {@class = "form-control", @id = "doctorId" })
+                @Html.ValidationMessageFor(model => model.DoctorId, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateReservation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateReservation, new { htmlAttributes = new { @class = "form-control" ,id="DateId"} })
+                @Html.ValidationMessageFor(model => model.DateReservation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.HourIdReservation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.HourIdReservation, Enumerable.Empty<SelectListItem>(), "-- Hour --", new { @class = "form-control",id="IdHour"})
+                @Html.ValidationMessageFor(model => model.HourIdReservation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Coments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Coments, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Coments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+
+     
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+ 
+    <script type="text/javascript">
+        $('#procedureId').change(function () {
+            var selectedProcedure = $("#procedureId").val();
+            var docsSelect = $('#doctorId');
+            docsSelect.empty();
+            docsSelect.disable = false;
+            if (selectedProcedure != null && selectedProcedure != '') {
+                $.ajax({
+                    url: "/Pacients/GetDoctor/",
+                    type: "Get",
+                    data: { id: selectedProcedure },
+                    success: function (data) {
+                       
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = new Option(data[i].Text, data[i].Value);
+                            $('#doctorId').append(opt);
+
+
+                        }
+
+                    }
+
+                });
+            }
+        });
+        ////////
+        $('#DateId').change(function () {
+            var selectedData = $("#DateId").val();
+            var docSelect = $("#doctorId").val();
+            var hourSelect = $('#IdHour');
+            hourSelect.empty();
+            hourSelect.disable = false;
+            if (selectedData != null && selectedData != '') {
+                $.ajax({
+                    url: "/Pacients/GetHour/",
+                    type: "Get",
+                    data: { date: selectedData, doctor: docSelect },
+                    success: function (data) {
+                       
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = new Option(data[i].Text, data[i].Value);
+                            $('#IdHour').append(opt);
+
+
+                        }
+
+                    }
+
+                });
+            }
+        });
+    </script>
+}

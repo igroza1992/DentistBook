@@ -1,0 +1,61 @@
+﻿@model IEnumerable<DentistBook.Models.Doctor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+<input type="button" class="btn btn-primary" value="New" onclick="location.href='@Url.Action("Create", "Doctors")'" />
+</p>
+<table id="doctorsId" class="table table table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DayOfBirth)
+        </th>
+        <th>
+            Edition
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfBirth)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DoctorID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.DoctorID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.DoctorID })
+            </td>
+        </tr>
+    
+    }
+    </tbody>
+
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#doctorsId").DataTable();
+        })
+    </script>
+}

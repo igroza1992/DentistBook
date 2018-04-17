@@ -1,0 +1,85 @@
+﻿@model IEnumerable<DentistBook.Models.Pacient>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <input type="button" class="btn btn-primary" value="New" onclick="location.href='@Url.Action("Create", "Pacients")'" />
+
+   
+</p>
+<table id="pacient" class="table table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Coments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Procedure.Name)
+        </th>
+        <th>
+            Function
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Name )
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Surname)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Procedure.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.PacientId}) |
+                @Html.ActionLink("Details", "Details", new {id = item.PacientId}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.PacientId})
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#pacient").DataTable();
+        })
+    </script>
+}
